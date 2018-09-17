@@ -1,0 +1,21 @@
+DATA:
+i	0
+b0	0
+CODE:
+	CMP A,0
+	JEQ end
+	MOV (i),A
+         
+           
+	MOV (b0),B # comentario
+	MOV A,B
+mult:	MOV B,A
+	MOV A,(i)
+	SUB A,1
+	JEQ move
+	MOV (i),A
+	MOV A,B
+	ADD A,(b0)
+	JMP mult
+move:	MOV A,B
+end:	
