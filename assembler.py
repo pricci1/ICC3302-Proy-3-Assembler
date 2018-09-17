@@ -18,18 +18,17 @@ def emptyLine(l):
 '''Pass 1:  Remove comments, empty lines '''
 
 with open(input_file, 'r') as file:
-    with open(temp_file, 'w') as temp:
-        code = False
-        for line in file:
-            code = False if re.match(r'CODE', line) == None and not code else True
-            if not code: continue    # For now, skip DATA section
-            
-            line = re.sub(r'\n', r'', line)    # Remove newline character
-            line = re.sub(r' #.*', r'', line)  # Remove comments
-            line_tokens = [i for i in re.split(ts ,line)]
-            if not emptyLine(line_tokens):
-                print(line_tokens)
-                program.append(line_tokens)
+    code = False
+    for line in file:
+        code = False if re.match(r'CODE', line) == None and not code else True
+        if not code: continue    # For now, skip DATA section
+        
+        line = re.sub(r'\n', r'', line)    # Remove newline character
+        line = re.sub(r' #.*', r'', line)  # Remove comments
+        line_tokens = [i for i in re.split(ts ,line)]
+        if not emptyLine(line_tokens):
+            print(line_tokens)
+            program.append(line_tokens)
 
 
       #  print([i for i in re.split(ts ,line) if i != ''])
