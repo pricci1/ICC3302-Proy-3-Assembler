@@ -40,13 +40,75 @@ for i in range(len(program)):
 ''' Part 3: Translate opcodes '''
 
 for line in program:
-    if line[2] == "CMP":
+    if line[2] == "MOV":                                        # MOV
         if line[3] == "A":
             pass
         elif line[3] == "B":
             pass
         else:
             print('Error, %s %s no existe',line[2], line[3])
+    elif line[2] == "ADD":                                      # ADD
+        if line[3] == "A":
+            pass
+        elif line[3] == "B":
+            pass
+        else:
+            print('Error, %s %s no existe',line[2], line[3])
+    elif line[2] == "SUB":                                      # SUB
+        if line[3] == "A":
+            pass
+        elif line[3] == "B":
+            pass
+        else:
+            print('Error, %s %s no existe',line[2], line[3])
+    elif line[2] == "AND":                                      # AND
+        if line[3] == "A":
+            pass
+        elif line[3] == "B":
+            pass
+        else:
+            print('Error, %s %s no existe',line[2], line[3])
+    elif line[2] == "OR":                                      # OR
+        if line[3] == "A":
+            pass
+        elif line[3] == "B":
+            pass
+        else:
+            print('Error, %s %s no existe',line[2], line[3])
+    elif line[2] == "NOT":                                      # NOT
+        if line[3] == "A":
+            pass
+        elif line[3] == "B":
+            pass
+        else:
+            print('Error, %s %s no existe',line[2], line[3])
+    elif line[2] == "XOR":                                      # XOR
+        if line[3] == "A":
+            pass
+        elif line[3] == "B":
+            pass
+        else:
+            print('Error, %s %s no existe',line[2], line[3])
+    elif line[2] == "SHL":                                      # SHL
+        if line[3] == "A":
+            pass
+        elif line[3] == "B":
+            pass
+        else:
+            print('Error, %s %s no existe',line[2], line[3])
+    elif line[2] == "SHR":                                      # SHR
+        if line[3] == "A":
+            pass
+        elif line[3] == "B":
+            pass
+        else:
+            print('Error, %s %s no existe',line[2], line[3])
+    elif line[2] == "INC":                                      # INC
+        if line[3] == "B":
+            pass
+        else:
+            print('Error, %s %s no existe',line[2], line[3])
+    
 
 
 
