@@ -42,16 +42,36 @@ for i in range(len(program)):
 for line in program:
     if line[2] == "MOV":                                        # MOV
         if line[3] == "A":
-            pass
+            if line[4] == "B":
+                pass
+            elif re.match(r'^[0-9]+$', line[4]) != None:
+                pass
+            else:
+                print('Error, %s %s no existe',line[2], line[3])
         elif line[3] == "B":
-            pass
+            if line[4] == "A":
+                pass
+            elif re.match(r'^[0-9]+$', line[4]) != None:
+                pass
+            else:
+                print('Error, %s %s no existe',line[2], line[3])
         else:
             print('Error, %s %s no existe',line[2], line[3])
     elif line[2] == "ADD":                                      # ADD
         if line[3] == "A":
-            pass
+            if line[4] == "B":
+                pass
+            elif re.match(r'^[0-9]+$', line[4]) != None:
+                pass
+            else:
+                print('Error, %s %s no existe',line[2], line[3])
         elif line[3] == "B":
-            pass
+            if line[4] == "A":
+                pass
+            elif re.match(r'^[0-9]+$', line[4]) != None:
+                pass
+            else:
+                print('Error, %s %s no existe',line[2], line[3])
         else:
             print('Error, %s %s no existe',line[2], line[3])
     elif line[2] == "SUB":                                      # SUB
