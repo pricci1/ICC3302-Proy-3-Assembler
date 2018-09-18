@@ -26,6 +26,7 @@ loop:
   JEQ loop
 yes:
   MOV A, (res)
-  INC A
+  ADD A, 1
   MOV (res), A
 end:
+  
