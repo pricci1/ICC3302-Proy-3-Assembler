@@ -35,7 +35,7 @@ with open(input_file, 'r') as file:
 program = program[1:] # Remove ['CODE:']
 for i in range(len(program)):
     if re.match(r'[a-z]+\:$', program[i][0]) != None:   # if the first token in line is smthg like "word:"
-        labels[program[i][0][:-1]] = i                  # save that token, minus ":", and it's line number
+        labels[program[i][0][:-1]] = i                  # save that token, minus ":", and its line number
 
 ''' Part 3: Translate opcodes '''
 
