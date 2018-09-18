@@ -16,6 +16,7 @@ loop:
   MOV A, (B)
   MOV B, (n)
   ADD B, (c)
+  SUB B, 1
   MOV B, (B)
   COMP A, B
   JNE end
@@ -29,4 +30,3 @@ yes:
   ADD A, 1
   MOV (res), A
 end:
-  

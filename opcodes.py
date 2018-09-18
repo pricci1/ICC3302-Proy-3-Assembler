@@ -19,4 +19,4 @@ opcodes = {"MOV":{"A":{"B":"", "lit":""},
                   "B":{"A":"", "B":""},
            "INC":{"B": ""}}
 
-print(opcodes["MOV"]["AX"]["5"])
+print(opcodes["MOV"]["A"]["B"])
