@@ -4,6 +4,7 @@ input_file = "./program.txt"
 temp_file = "./asm.temp"
 program = []
 output = []
+labels = {} # Holds tags and where they are located
 ts = r'[ \t,]+'
 
 def emptyLine(l):
@@ -15,7 +16,7 @@ def emptyLine(l):
 
 
 
-'''Pass 1:  Remove comments, empty lines '''
+'''Part 1:  Remove comments, empty lines and build program list '''
 
 with open(input_file, 'r') as file:
     code = False
@@ -30,9 +31,22 @@ with open(input_file, 'r') as file:
             print(line_tokens)
             program.append(line_tokens)
 
+''' Part 2: Create labels dictionary '''
+program = program[1:] # Remove ['CODE:']
+for i in range(len(program)):
+    if re.match(r'[a-z]+\:$', program[i][0]) != None:   # if the first token in line is smthg like "word:"
+        labels[program[i][0][:-1]] = i                  # save that token, minus ":", and it's line number
 
-      #  print([i for i in re.split(ts ,line) if i != ''])
+''' Part 3: Translate opcodes '''
 
+for line in program:
+    if line[2] == "CMP":
+        if line[3] == "A":
+            pass
+        elif line[3] == "B":
+            pass
+        else:
+            print('Error, %s %s no existe',line[2], line[3])
 
 
 
