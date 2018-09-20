@@ -1,51 +1,3 @@
-import re
-
-input_file = "./program.txt"
-temp_file = "./asm.temp"
-program = []
-output = []
-labels = {} # Holds tags and where they are located
-ts = r'[ \t,]+'
-
-def emptyLine(l):
-    """ Returns True if the line is composed of empty tokens (e.g. ['', '']) """
-    total = 0
-    for e in l:
-        total += len(e)
-    return total == 0
-
-def validOperand(operand: str):
-    """ Checks if operand is a valid integer OR a valid label TODO: validate memory position 
-        Returns True/False"""
-    if operand.isnumeric() or operand in labels.keys(): # Is a number or label
-        return True
-    elif len(operand) > 3:
-        if operand[1:-1].isnumeric() or operand[1:-1] in labels.keys(): # Is a (number) or (label)
-            return True
-    return False
-
-'''Part 1:  Remove comments, empty lines and build program list '''
-
-with open(input_file, 'r') as file:
-    code = False
-    for line in file:
-        code = False if re.match(r'CODE', line) == None and not code else True
-        if not code: continue    # For now, skip DATA section
-        
-        line = re.sub(r'\n', r'', line)    # Remove newline character
-        line = re.sub(r' #.*', r'', line)  # Remove comments
-        line_tokens = [i for i in re.split(ts ,line)]
-        if not emptyLine(line_tokens):
-            print(line_tokens)
-            program.append(line_tokens)
-
-''' Part 2: Create labels dictionary '''
-program = program[1:] # Remove ['CODE:']
-for i in range(len(program)):
-    if re.match(r'[a-z]+\:$', program[i][0]) != None:   # if the first token in line is smthg like "word:"
-        labels[program[i][0][:-1]] = i                  # save that token, minus ":", and its line number
-
-''' Part 3: Translate opcodes '''
 
 opcodes = {"MOV":{"A":      {"B":"0000000", "Lit":"0000010", "(Dir)": "0100101", "(B)":"0101001"},
                   "B":      {"A":"0000001", "Lit":"0000011", "(Dir)": "0100110", "(B)":"0101010"},
@@ -66,7 +18,7 @@ opcodes = {"MOV":{"A":      {"B":"0000000", "Lit":"0000010", "(Dir)": "0100101",
            "NOT":{"A":      {"B":"0010100", "A":"0010101"},
                   "B":      {"A":"0010110", "B":"0010111"},
                   "(Dir)":  {"A": "0111100", "B": "0111101"},
-                  "(B)":    {"": "0111110"}},
+                  "(B)":    "0111110"},
            "XOR":{"A":      {"B":"0011000", "Lit":"0011010", "(Dir)": "0111111", "(B)": "1000001"},
                   "B":      {"A":"0011001", "Lit":"0011011", "(Dir)": "1000000"},
                   "(Dir)":  "1000010"},
@@ -96,23 +48,5 @@ opcodes = {"MOV":{"A":      {"B":"0000000", "Lit":"0000010", "(Dir)": "0100101",
            "JOV":{"Dir":    "1011011"}
           }
 
-for line in program:
-    if len(line) > 1:
-        if opcodes.__contains__(line[1]):
-            if opcodes[line[1]].__contains__(line[2]):
-                if opcodes[line[1]][line[2]].__contains__(line[3]):
-                    pass
-                elif validOperand(line[3]):
-                    pass
-                else:
-                    print('Error, %s %s %s no es válido' % (line[1], line[2], line[3]))
-            elif validOperand(line[2]):
-                pass
-            else:
-                print('Error, %s %s no es válido' % (line[1], line[2]))
-        else:
-            print('Error, %s no es válido' % (line[1]))
-    
-# TODO: create dictionary with memory data
-
-
+print(opcodes["NOT"]["(B)"])
+print(opcodes["MOV"].__contains__("MOV"))
