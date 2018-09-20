@@ -116,13 +116,19 @@ for line in program:
                 if opcodes[line[1]][line[2]].__contains__(line[3]):
                     print(opcodes[line[1]][line[2]][line[3]])
                     # pass
-                elif validOperand(line[3]):
-                    # print(opcodes[line[1]][line[2]])
+                elif validOperand(line[3])[0]:
+                    print(opcodes[line[1]][line[2]][validOperand(line[3])[1]])
                     pass
                 else:
                     print('Error, %s %s %s no es válido' % (line[1], line[2], line[3]))
-            elif validOperand(line[2]):
-                # print(opcodes[line[1]])
+            elif validOperand(line[2])[0]:
+                if len(line) > 3: # Is something like 'label: MOV (Dir) A'
+                    if opcodes[line[1]][validOperand(line[2])[1]].__contains__(line[3]):
+                        print(opcodes[line[1]][validOperand(line[2])[1]][line[3]])
+                    else: # Exists?
+                        print(opcodes[line[1]][validOperand(line[2])[1]][validOperand(line[3])[1]])
+                else: # Is something like 'label: XOR (Dir)'
+                    print(opcodes[line[1]][validOperand(line[2])[1]])
                 pass
             else:
                 print('Error, %s %s no es válido' % (line[1], line[2]))
