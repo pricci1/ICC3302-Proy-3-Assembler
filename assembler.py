@@ -1,7 +1,8 @@
 import re
 
 input_file = "./program.txt"
-temp_file = "./asm.temp"
+out_file_path = "./program.out"
+out_file = open(out_file_path, "w+")
 program = []
 data = []
 output = []
@@ -124,10 +125,10 @@ for line in program:
             if opcodes[line[1]].__contains__(line[2]):
                 if opcodes[line[1]][line[2]].__contains__(line[3]):
                     print(opcodes[line[1]][line[2]][line[3]],
-                         int2BinaryString(line[3], 8) if validOperand(line[3])[0] else '')
+                         int2BinaryString(line[3], 8) if validOperand(line[3])[0] else '', file=out_file)
                     # pass
                 elif validOperand(line[3])[0]:
-                    print(opcodes[line[1]][line[2]][validOperand(line[3])[1]])
+                    print(opcodes[line[1]][line[2]][validOperand(line[3])[1]], file=out_file)
                     pass
                 else:
                     print('Error, %s %s %s no es válido' % (line[1], line[2], line[3]))
@@ -135,19 +136,19 @@ for line in program:
                 if len(line) > 3: # Is something like 'label: MOV (Dir) A'
                     if opcodes[line[1]][validOperand(line[2])[1]].__contains__(line[3]):
                         print(opcodes[line[1]][validOperand(line[2])[1]][line[3]],
-                         int2BinaryString(line[2], 8) if validOperand(line[2])[0] else '')
+                         int2BinaryString(line[2], 8) if validOperand(line[2])[0] else '', file=out_file)
                     else: # Exists?
                         print(opcodes[line[1]][validOperand(line[2])[1]][validOperand(line[3])[1]],
-                              int2BinaryString(line[3], 8) if validOperand(line[3])[0] else '')
+                              int2BinaryString(line[3], 8) if validOperand(line[3])[0] else '', file=out_file)
                 else: # Is something like 'label: XOR (Dir)'
                     print(opcodes[line[1]][validOperand(line[2])[1]],
-                          int2BinaryString(line[2], 8) if validOperand(line[2])[0] else '')
+                          int2BinaryString(line[2], 8) if validOperand(line[2])[0] else '', file=out_file)
                 pass
             else:
                 print('Error, %s %s no es válido' % (line[1], line[2]))
         else:
             print('Error, %s no es válido' % (line[1]))
     
-
+out_file.close()
 
 
