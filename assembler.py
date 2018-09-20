@@ -5,10 +5,9 @@ out_file_path = "./program.out"
 out_file = open(out_file_path, "w+")
 program = []
 data = []
-output = []
 labels = {} # Holds tags and where they are located
 memory = {}
-ts = r'[ \t,]+'
+ts = r'[ \t,]+' # Token separation pattern
 
 def emptyLine(l):
     """ Returns True if the line is composed of empty tokens (e.g. ['', '']) """
@@ -55,19 +54,23 @@ with open(input_file, 'r') as file:
         elif not emptyLine(line_tokens):
             # print(line_tokens)
             program.append(line_tokens)
+
 ''' Part 2: Create labels dictionary '''
+
 program = program[1:] # Remove ['CODE:']
 for i in range(len(program)):
     if re.match(r'[a-z]+\:$', program[i][0]) != None:   # if the first token in line is smthg like "word:"
         labels[program[i][0][:-1]] = i                  # save that token, minus ":", and its line number
 
 ''' Part 3: Create memory dictionary '''
+
 data = data[1:]
 for i in range(len(data)):
     print(data[i])
     if re.match(r'[a-z0-9_]+$', data[i][0]) != None:   # if the first token in line is smthg like "word:"
         memory[data[i][0]] = i  
 print(memory)
+
 ''' Part 4: Translate opcodes '''
 
 opcodes = {"MOV":{"A":      {"B":"0000000", "Lit":"0000010", "(Dir)": "0100101", "(B)":"0101001"},
