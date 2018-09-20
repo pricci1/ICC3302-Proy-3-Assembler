@@ -18,4 +18,4 @@ mult:	MOV B,A
 	ADD A,(b0)
 	JMP mult
 move:	MOV A,B
-end:	
+end:
