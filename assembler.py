@@ -3,8 +3,10 @@ import re
 input_file = "./program.txt"
 temp_file = "./asm.temp"
 program = []
+data = []
 output = []
 labels = {} # Holds tags and where they are located
+memory = {}
 ts = r'[ \t,]+'
 
 def emptyLine(l):
@@ -17,10 +19,10 @@ def emptyLine(l):
 def validOperand(operand: str):
     """ Checks if operand is a valid integer OR a valid label TODO: validate memory position 
         Returns True/False"""
-    if operand.isnumeric() or operand in labels.keys(): # Is a number or label
+    if operand.isnumeric() or operand in labels.keys() or operand in memory.keys(): # Is a number or label
         return True
-    elif len(operand) > 3:
-        if operand[1:-1].isnumeric() or operand[1:-1] in labels.keys(): # Is a (number) or (label)
+    elif len(operand) >= 3:
+        if operand[1:-1].isnumeric() or operand[1:-1] in labels.keys() or operand[1:-1] in memory.keys(): # Is a (number) or (label)
             return True
     return False
 
@@ -30,21 +32,28 @@ with open(input_file, 'r') as file:
     code = False
     for line in file:
         code = False if re.match(r'CODE', line) == None and not code else True
-        if not code: continue    # For now, skip DATA section
-        
         line = re.sub(r'\n', r'', line)    # Remove newline character
         line = re.sub(r' #.*', r'', line)  # Remove comments
         line_tokens = [i for i in re.split(ts ,line)]
-        if not emptyLine(line_tokens):
-            print(line_tokens)
+        # print(line_tokens)
+        if not code:
+            data.append(line_tokens)  # For now, skip DATA section
+        elif not emptyLine(line_tokens):
+            # print(line_tokens)
             program.append(line_tokens)
-
 ''' Part 2: Create labels dictionary '''
 program = program[1:] # Remove ['CODE:']
 for i in range(len(program)):
     if re.match(r'[a-z]+\:$', program[i][0]) != None:   # if the first token in line is smthg like "word:"
         labels[program[i][0][:-1]] = i                  # save that token, minus ":", and its line number
 
+''' Part 3: Create mem dict '''
+data = data[1:]
+for i in range(len(data)):
+    print(data[i])
+    if re.match(r'[a-z0-9_]+$', data[i][0]) != None:   # if the first token in line is smthg like "word:"
+        memory[data[i][0]] = i  
+print(memory)
 ''' Part 3: Translate opcodes '''
 
 opcodes = {"MOV":{"A":      {"B":"0000000", "Lit":"0000010", "(Dir)": "0100101", "(B)":"0101001"},
