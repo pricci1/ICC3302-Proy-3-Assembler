@@ -117,7 +117,8 @@ for line in program:
         if opcodes.__contains__(line[1]):
             if opcodes[line[1]].__contains__(line[2]):
                 if opcodes[line[1]][line[2]].__contains__(line[3]):
-                    print(opcodes[line[1]][line[2]][line[3]])
+                    print(opcodes[line[1]][line[2]][line[3]],
+                         int2BinaryString(line[3], 8) if validOperand(line[3])[0] else '')
                     # pass
                 elif validOperand(line[3])[0]:
                     print(opcodes[line[1]][line[2]][validOperand(line[3])[1]])
@@ -127,11 +128,14 @@ for line in program:
             elif validOperand(line[2])[0]:
                 if len(line) > 3: # Is something like 'label: MOV (Dir) A'
                     if opcodes[line[1]][validOperand(line[2])[1]].__contains__(line[3]):
-                        print(opcodes[line[1]][validOperand(line[2])[1]][line[3]])
+                        print(opcodes[line[1]][validOperand(line[2])[1]][line[3]],
+                         int2BinaryString(line[2], 8) if validOperand(line[2])[0] else '')
                     else: # Exists?
-                        print(opcodes[line[1]][validOperand(line[2])[1]][validOperand(line[3])[1]])
+                        print(opcodes[line[1]][validOperand(line[2])[1]][validOperand(line[3])[1]],
+                              int2BinaryString(line[3], 8) if validOperand(line[3])[0] else '')
                 else: # Is something like 'label: XOR (Dir)'
-                    print(opcodes[line[1]][validOperand(line[2])[1]])
+                    print(opcodes[line[1]][validOperand(line[2])[1]],
+                          int2BinaryString(line[2], 8) if validOperand(line[2])[0] else '')
                 pass
             else:
                 print('Error, %s %s no es válido' % (line[1], line[2]))
