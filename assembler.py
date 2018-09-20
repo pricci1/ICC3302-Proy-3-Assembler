@@ -31,7 +31,13 @@ def validOperand(operand: str):
     return (False, 0)
 
 def int2BinaryString(number, lenght):
-    return ('0'*(lenght-len(bin(number)[2:])) if (lenght-len(bin(number)[2:])) > 0 else '') + bin(number)[2:]
+    if number[0] == '(':
+        number = number[1:-1]
+    if memory.__contains__(number):
+        number = memory[number]
+    elif labels.__contains__(number):
+        number = labels[number]
+    return ('0'*(lenght-len(bin(int(number))[2:])) if (lenght-len(bin(int(number))[2:])) > 0 else "") + bin(int(number))[2:]
 
 '''Part 1:  Remove comments, empty lines and build program list '''
 
