@@ -14,7 +14,15 @@ def emptyLine(l):
         total += len(e)
     return total == 0
 
-
+def validOperand(operand: str):
+    """ Checks if operand is a valid integer OR a valid label TODO: validate memory position 
+        Returns True/False"""
+    if operand.isnumeric() or operand in labels.keys(): # Is a number or label
+        return True
+    elif len(operand) > 3:
+        if operand[1:-1].isnumeric() or operand[1:-1] in labels.keys(): # Is a (number) or (label)
+            return True
+    return False
 
 '''Part 1:  Remove comments, empty lines and build program list '''
 
@@ -94,8 +102,12 @@ for line in program:
             if opcodes[line[1]].__contains__(line[2]):
                 if opcodes[line[1]][line[2]].__contains__(line[3]):
                     pass
+                elif validOperand(line[3]):
+                    pass
                 else:
                     print('Error, %s %s %s no es válido' % (line[1], line[2], line[3]))
+            elif validOperand(line[2]):
+                pass
             else:
                 print('Error, %s %s no es válido' % (line[1], line[2]))
         else:
