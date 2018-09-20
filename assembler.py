@@ -19,12 +19,16 @@ def emptyLine(l):
 def validOperand(operand: str):
     """ Checks if operand is a valid integer OR a valid label TODO: validate memory position 
         Returns True/False"""
-    if operand.isnumeric() or operand in labels.keys() or operand in memory.keys(): # Is a number or label
-        return True
+    if operand.isnumeric():                                                     # Is a number
+        return (True, "Lit")
+    elif operand in labels.keys() or operand in memory.keys():                  # Is a label or memory
+        return (True, "Dir")
     elif len(operand) >= 3:
-        if operand[1:-1].isnumeric() or operand[1:-1] in labels.keys() or operand[1:-1] in memory.keys(): # Is a (number) or (label)
-            return True
-    return False
+        if operand[1:-1].isnumeric():                                           # Is a (number)
+            return (True, "(B)")
+        elif operand[1:-1] in labels.keys() or operand[1:-1] in memory.keys():  # Is a (Dir)
+            return (True, "(Dir)")
+    return (False, 0)
 
 '''Part 1:  Remove comments, empty lines and build program list '''
 
@@ -110,12 +114,15 @@ for line in program:
         if opcodes.__contains__(line[1]):
             if opcodes[line[1]].__contains__(line[2]):
                 if opcodes[line[1]][line[2]].__contains__(line[3]):
-                    pass
+                    print(opcodes[line[1]][line[2]][line[3]])
+                    # pass
                 elif validOperand(line[3]):
+                    # print(opcodes[line[1]][line[2]])
                     pass
                 else:
                     print('Error, %s %s %s no es válido' % (line[1], line[2], line[3]))
             elif validOperand(line[2]):
+                # print(opcodes[line[1]])
                 pass
             else:
                 print('Error, %s %s no es válido' % (line[1], line[2]))
