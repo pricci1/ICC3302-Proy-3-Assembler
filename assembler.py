@@ -17,7 +17,7 @@ def emptyLine(l):
     return total == 0
 
 def validOperand(operand: str):
-    """ Checks if operand is a valid integer OR a valid label TODO: validate memory position 
+    """ Checks if operand is a valid integer OR a valid label 
         Returns True/False"""
     if operand.isnumeric():                                                     # Is a number
         return (True, "Lit")
@@ -66,10 +66,8 @@ for i in range(len(program)):
 
 data = data[1:]
 for i in range(len(data)):
-    print(data[i])
     if re.match(r'[a-z0-9_]+$', data[i][0]) != None:   # if the first token in line is smthg like "word:"
         memory[data[i][0]] = i  
-print(memory)
 
 ''' Part 4: Translate opcodes '''
 
@@ -154,4 +152,4 @@ for line in program:
     
 out_file.close()
 
-
+# TODO: print data / code / output file line number
