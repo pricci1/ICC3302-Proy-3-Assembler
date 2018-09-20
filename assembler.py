@@ -113,6 +113,6 @@ for line in program:
         else:
             print('Error, %s no es válido' % (line[1]))
     
-
+# TODO: create dictionary with memory data
 
 
