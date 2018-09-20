@@ -30,6 +30,9 @@ def validOperand(operand: str):
             return (True, "(Dir)")
     return (False, 0)
 
+def int2BinaryString(number, lenght):
+    return ('0'*(lenght-len(bin(number)[2:])) if (lenght-len(bin(number)[2:])) > 0 else '') + bin(number)[2:]
+
 '''Part 1:  Remove comments, empty lines and build program list '''
 
 with open(input_file, 'r') as file:
@@ -51,14 +54,14 @@ for i in range(len(program)):
     if re.match(r'[a-z]+\:$', program[i][0]) != None:   # if the first token in line is smthg like "word:"
         labels[program[i][0][:-1]] = i                  # save that token, minus ":", and its line number
 
-''' Part 3: Create mem dict '''
+''' Part 3: Create memory dictionary '''
 data = data[1:]
 for i in range(len(data)):
     print(data[i])
     if re.match(r'[a-z0-9_]+$', data[i][0]) != None:   # if the first token in line is smthg like "word:"
         memory[data[i][0]] = i  
 print(memory)
-''' Part 3: Translate opcodes '''
+''' Part 4: Translate opcodes '''
 
 opcodes = {"MOV":{"A":      {"B":"0000000", "Lit":"0000010", "(Dir)": "0100101", "(B)":"0101001"},
                   "B":      {"A":"0000001", "Lit":"0000011", "(Dir)": "0100110", "(B)":"0101010"},
@@ -135,6 +138,6 @@ for line in program:
         else:
             print('Error, %s no es válido' % (line[1]))
     
-# TODO: create dictionary with memory data
+
 
 
