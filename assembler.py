@@ -69,6 +69,13 @@ for i in range(len(data)):
     if re.match(r'[a-z0-9_]+$', data[i][0]) != None:   # if the first token in line is smthg like "word:"
         memory[data[i][0]] = i  
 
+''' Part 3.1: Create .mem file '''
+if (len(memory.items()) > 0):
+    out_mem = open(out_file_path+".mem", "w+")
+    for item in memory.items():
+        print(int2BinaryString(str(item[1]), 8), file=out_mem)
+    out_mem.close() 
+
 ''' Part 4: Translate opcodes '''
 
 opcodes = {"MOV":{"A":      {"B":"0000000", "Lit":"0000010", "(Dir)": "0100101", "(B)":"0101001"},
