@@ -1,8 +1,16 @@
 import re
+import argparse
 
-input_file = "./program.txt"
-out_file_path = "./program.out"
-out_file = open(out_file_path, "w+")
+parser = argparse.ArgumentParser()
+parser.add_argument("filename", help="Input ASM program file name.")
+args = parser.parse_args()
+
+input_file = args.filename
+out_file_path = "./" + args.filename 
+out_file = open(out_file_path + ".out", "w+")
+# input_file = "./program.txt"
+# out_file_path = "./program.out"
+# out_file = open(out_file_path, "w+")
 program = []
 data = []
 labels = {} # Holds tags and where they are located
@@ -41,6 +49,7 @@ def int2BinaryString(number, lenght):
 
 '''Part 1:  Remove comments, empty lines and build program list '''
 
+original_lines_count = 0
 with open(input_file, 'r') as file:
     code = False
     for line in file:
@@ -54,7 +63,7 @@ with open(input_file, 'r') as file:
         elif not emptyLine(line_tokens):
             # print(line_tokens)
             program.append(line_tokens)
-
+        original_lines_count += 1
 ''' Part 2: Create labels dictionary '''
 
 program = program[1:] # Remove ['CODE:']
@@ -68,6 +77,13 @@ data = data[1:]
 for i in range(len(data)):
     if re.match(r'[a-z0-9_]+$', data[i][0]) != None:   # if the first token in line is smthg like "word:"
         memory[data[i][0]] = i  
+
+''' Part 3.1: Create .mem file '''
+if (len(memory.items()) > 0):
+    out_mem = open(out_file_path+".mem", "w+")
+    for item in memory.items():
+        print(int2BinaryString(str(item[1]), 8), file=out_mem)
+    out_mem.close() 
 
 ''' Part 4: Translate opcodes '''
 
@@ -117,9 +133,15 @@ opcodes = {"MOV":{"A":      {"B":"0000000", "Lit":"0000010", "(Dir)": "0100101",
            "JGE":{"Dir":    "1011000"},
            "JLE":{"Dir":    "1011001"},
            "JCR":{"Dir":    "1011010"},
-           "JOV":{"Dir":    "1011011"}
+           "JOV":{"Dir":    "1011011"},
+           "CALL":{"Dir"    "1011100"},
+           "RET":{"":       "1011101"},
+           "PUSH":{"A":     "1011110"},
+           "PUSH":{"B":     "1011111"},
+           "POP":{"A":      "1100000"},
+           "POP":{"B":      "1100001"}
           }
-
+line_count = 1
 for line in program:
     if len(line) > 1:
         if opcodes.__contains__(line[1]):
@@ -129,10 +151,11 @@ for line in program:
                          int2BinaryString(line[3], 8) if validOperand(line[3])[0] else '', file=out_file)
                     # pass
                 elif validOperand(line[3])[0]:
-                    print(opcodes[line[1]][line[2]][validOperand(line[3])[1]], file=out_file)
+                    print(opcodes[line[1]][line[2]][validOperand(line[3])[1]],
+                          int2BinaryString(line[3], 8) if validOperand(line[3])[0] else '', file=out_file)
                     pass
                 else:
-                    print('Error, %s %s %s no es válido' % (line[1], line[2], line[3]))
+                    print('Error in line %d, %s %s %s no es válido' % (line_count, line[1], line[2], line[3]))
             elif validOperand(line[2])[0]:
                 if len(line) > 3: # Is something like 'label: MOV (Dir) A'
                     if opcodes[line[1]][validOperand(line[2])[1]].__contains__(line[3]):
@@ -146,10 +169,13 @@ for line in program:
                           int2BinaryString(line[2], 8) if validOperand(line[2])[0] else '', file=out_file)
                 pass
             else:
-                print('Error, %s %s no es válido' % (line[1], line[2]))
+                print('Error in line %d, %s %s no es válido' % (line_count, line[1], line[2]))
         else:
-            print('Error, %s no es válido' % (line[1]))
-    
+            print('Error in line %d, %s no es válido' % (line_count, line[1]))
+    line_count += 1
 out_file.close()
 
+print("# lines original file: " + str(original_lines_count) +
+      "\n# lines of code: " + str(line_count) +
+      "\n# lines in .out: ")
 # TODO: print data / code / output file line number
