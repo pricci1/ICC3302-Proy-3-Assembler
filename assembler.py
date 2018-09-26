@@ -1,7 +1,12 @@
 import re
+import argparse
 
-input_file = "./program.txt"
-out_file_path = "./program.out"
+parser = argparse.ArgumentParser()
+parser.add_argument("filename", help="Input ASM program file name.")
+args = parser.parse_args()
+
+input_file = args.filename
+out_file_path = "./" + args.filename + ".out"
 out_file = open(out_file_path, "w+")
 program = []
 data = []
