@@ -6,8 +6,8 @@ parser.add_argument("filename", help="Input ASM program file name.")
 args = parser.parse_args()
 
 input_file = args.filename
-out_file_path = "./" + args.filename + ".out"
-out_file = open(out_file_path, "w+")
+out_file_path = "./" + args.filename 
+out_file = open(out_file_path + ".out", "w+")
 # input_file = "./program.txt"
 # out_file_path = "./program.out"
 # out_file = open(out_file_path, "w+")
@@ -49,6 +49,7 @@ def int2BinaryString(number, lenght):
 
 '''Part 1:  Remove comments, empty lines and build program list '''
 
+original_lines_count = 0
 with open(input_file, 'r') as file:
     code = False
     for line in file:
@@ -62,7 +63,7 @@ with open(input_file, 'r') as file:
         elif not emptyLine(line_tokens):
             # print(line_tokens)
             program.append(line_tokens)
-
+        original_lines_count += 1
 ''' Part 2: Create labels dictionary '''
 
 program = program[1:] # Remove ['CODE:']
