@@ -169,4 +169,7 @@ for line in program:
     line_count += 1
 out_file.close()
 
+print("# lines original file: " + str(original_lines_count) +
+      "\n# lines of code: " + str(line_count) +
+      "\n# lines in .out: ")
 # TODO: print data / code / output file line number
