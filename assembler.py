@@ -8,6 +8,9 @@ args = parser.parse_args()
 input_file = args.filename
 out_file_path = "./" + args.filename + ".out"
 out_file = open(out_file_path, "w+")
+# input_file = "./program.txt"
+# out_file_path = "./program.out"
+# out_file = open(out_file_path, "w+")
 program = []
 data = []
 labels = {} # Holds tags and where they are located
@@ -141,7 +144,8 @@ for line in program:
                          int2BinaryString(line[3], 8) if validOperand(line[3])[0] else '', file=out_file)
                     # pass
                 elif validOperand(line[3])[0]:
-                    print(opcodes[line[1]][line[2]][validOperand(line[3])[1]], file=out_file)
+                    print(opcodes[line[1]][line[2]][validOperand(line[3])[1]],
+                          int2BinaryString(line[3], 8) if validOperand(line[3])[0] else '', file=out_file)
                     pass
                 else:
                     print('Error in line %d, %s %s %s no es válido' % (line_count, line[1], line[2], line[3]))
