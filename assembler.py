@@ -119,7 +119,7 @@ opcodes = {"MOV":{"A":      {"B":"0000000", "Lit":"0000010", "(Dir)": "0100101",
            "JCR":{"Dir":    "1011010"},
            "JOV":{"Dir":    "1011011"}
           }
-
+line_count = 1
 for line in program:
     if len(line) > 1:
         if opcodes.__contains__(line[1]):
@@ -132,7 +132,7 @@ for line in program:
                     print(opcodes[line[1]][line[2]][validOperand(line[3])[1]], file=out_file)
                     pass
                 else:
-                    print('Error, %s %s %s no es válido' % (line[1], line[2], line[3]))
+                    print('Error in line %d, %s %s %s no es válido' % (line_count, line[1], line[2], line[3]))
             elif validOperand(line[2])[0]:
                 if len(line) > 3: # Is something like 'label: MOV (Dir) A'
                     if opcodes[line[1]][validOperand(line[2])[1]].__contains__(line[3]):
@@ -146,10 +146,10 @@ for line in program:
                           int2BinaryString(line[2], 8) if validOperand(line[2])[0] else '', file=out_file)
                 pass
             else:
-                print('Error, %s %s no es válido' % (line[1], line[2]))
+                print('Error in line %d, %s %s no es válido' % (line_count, line[1], line[2]))
         else:
-            print('Error, %s no es válido' % (line[1]))
-    
+            print('Error in line %d, %s no es válido' % (line_count, line[1]))
+    line_count += 1
 out_file.close()
 
 # TODO: print data / code / output file line number
