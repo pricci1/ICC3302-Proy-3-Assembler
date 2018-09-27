@@ -27,12 +27,18 @@ def emptyLine(l):
 def validOperand(operand: str):
     """ Checks if operand is a valid integer OR a valid label 
         Returns True/False"""
-    if operand.isnumeric():                                                     # Is a number
+    if operand.isnumeric():
+        if int(operand) > 255:
+            print("Integer out of range")  
+            exit()                                                   # Is a number
         return (True, "Lit")
     elif operand in labels.keys() or operand in memory.keys():                  # Is a label or memory
         return (True, "Dir")
     elif len(operand) >= 3:
-        if operand[1:-1].isnumeric():                                           # Is a (number)
+        if operand[1:-1].isnumeric():                                           # Is a (number) 
+            if int(operand) > 255:
+                print("Integer out of range")
+                exit()          
             return (True, "(B)")
         elif operand[1:-1] in labels.keys() or operand[1:-1] in memory.keys():  # Is a (Dir)
             return (True, "(Dir)")
