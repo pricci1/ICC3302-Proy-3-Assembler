@@ -1,0 +1,48 @@
+DATA:
+    inicio1
+    inicio2
+    largo
+    pp      0
+    i       0
+    b0      0
+    actual  0
+CODE:
+bmult:
+    MOV B,(inicio1)
+    MOV B, (B)
+    CMP B, 0
+    JEQ sum
+    MOV A, B
+    MOV B,(inicio2)
+    MOV B, (B)
+    CMP B, 0
+    JEQ sum
+    MOV (i), A    
+    MOV (b0),B
+    MOV A, B
+mult:
+    MOV B, A
+    MOV A, (i)
+    MOV (b0), B
+    SUB A, 1
+    JEQ sum
+    MOV (i), A
+    MOV A, B
+    ADD A, (b0)
+    JMP mult
+sum:
+    RST (i)
+    RST (b0)
+    MOV A, B
+    MOV B, (pp)
+    ADD A, B
+    MOV (pp), A
+    INC (actual)
+    MOV B, (largo)
+    MOV B, (B)
+    CMP B, (actual)
+    JEQ end
+    INC (inicio1)
+    INC (inicio2)
+    JMP bmult
+end:
