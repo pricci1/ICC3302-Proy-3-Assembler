@@ -88,7 +88,7 @@ for i in range(len(program)):
 
 data = data[1:]
 for i in range(len(data)):
-    if re.match(r'[a-z0-9_]+$', data[i][0]) != None:   # if the first token in line is smthg like "word:"
+    if re.match(r'[a-zA-Z0-9_]+$', data[i][0]) != None:   # if the first token in line is smthg like "word:"
         memory[data[i][0]] = i  
 
 ''' Part 3.1: Create .mem file '''
@@ -148,11 +148,12 @@ opcodes = {"MOV":{"A":      {"B":"0000000", "Lit":"0000010", "(Dir)": "0100101",
            "JCR":{"Dir":    "1011010"},
            "JOV":{"Dir":    "1011011"},
            "CALL":{"Dir"    "1011100"},
-           "RET":{"":       "1011101"}, # has to print 2 opcodes
-           "PUSH":{"A":     "1011110"},
-           "PUSH":{"B":     "1011111"},
-           "POP":{"A":      "1100000"},
-           "POP":{"B":      "1100001"}
+           "RET":{0:       "1011101\n1111101"}, # has to print 2 opcodes
+           "PUSH":{"A":     "1011110",
+                   "B":     "1011111"},
+           "POP":{"A":      "1100000\n1111110",
+                  "B":      "1100001\n1111111"},
+           "POP2":{"B":      "1100001"}
           }
 line_count = 1
 output_line_count = 0
@@ -161,7 +162,22 @@ for line in program:
     if len(line) > 1:
         if opcodes.__contains__(line[1]):
             if opcodes[line[1]].__contains__(line[2]):
-                if opcodes[line[1]][line[2]].__contains__(line[3]):
+                if line[1] == 'PUSH':
+                    if opcodes[line[1]].__contains__(line[2]):
+                        print(opcodes[line[1]][line[2]], file=out_file)
+                        output_line_count += 1
+                    else:
+                        print('Error in line %d, %s %s no es válido' % (line_count, line[1], line[2]))
+                elif line[1] == 'POP':
+                    if opcodes[line[1]].__contains__(line[2]):
+                        print(opcodes[line[1]][line[2]], file=out_file)
+                        output_line_count += 2
+                    else:
+                        print('Error in line %d, %s %s no es válido' % (line_count, line[1], line[2]))
+                elif line[1] == 'RET':
+                    print(opcodes[line[1]][0], file=out_file)
+                    output_line_count += 2
+                elif opcodes[line[1]][line[2]].__contains__(line[3]):
                     print(opcodes[line[1]][line[2]][line[3]],
                          int2BinaryString(line[3], 8) if validOperand(line[3])[0] else '', file=out_file)
                     output_line_count += 1
@@ -186,7 +202,7 @@ for line in program:
                     print(opcodes[line[1]][validOperand(line[2])[1]],
                           int2BinaryString(line[2], 8) if validOperand(line[2])[0] else '', file=out_file)
                     output_line_count += 1
-                pass
+
             else:
                 print('Error in line %d, %s %s no es válido' % (line_count, line[1], line[2]))
                 errors += 1
