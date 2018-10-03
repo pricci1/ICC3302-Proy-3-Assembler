@@ -141,13 +141,14 @@ opcodes = {"MOV":{"A":      {"B":"0000000", "Lit":"0000010", "(Dir)": "0100101",
            "JCR":{"Dir":    "1011010"},
            "JOV":{"Dir":    "1011011"},
            "CALL":{"Dir"    "1011100"},
-           "RET":{"":       "1011101"},
+           "RET":{"":       "1011101"}, # has to print 2 opcodes
            "PUSH":{"A":     "1011110"},
            "PUSH":{"B":     "1011111"},
            "POP":{"A":      "1100000"},
            "POP":{"B":      "1100001"}
           }
 line_count = 1
+output_line_count = 0
 for line in program:
     if len(line) > 1:
         if opcodes.__contains__(line[1]):
@@ -155,11 +156,11 @@ for line in program:
                 if opcodes[line[1]][line[2]].__contains__(line[3]):
                     print(opcodes[line[1]][line[2]][line[3]],
                          int2BinaryString(line[3], 8) if validOperand(line[3])[0] else '', file=out_file)
-                    # pass
+                    output_line_count += 1
                 elif validOperand(line[3])[0]:
                     print(opcodes[line[1]][line[2]][validOperand(line[3])[1]],
                           int2BinaryString(line[3], 8) if validOperand(line[3])[0] else '', file=out_file)
-                    pass
+                    output_line_count += 1
                 else:
                     print('Error in line %d, %s %s %s no es válido' % (line_count, line[1], line[2], line[3]))
             elif validOperand(line[2])[0]:
@@ -167,12 +168,15 @@ for line in program:
                     if opcodes[line[1]][validOperand(line[2])[1]].__contains__(line[3]):
                         print(opcodes[line[1]][validOperand(line[2])[1]][line[3]],
                          int2BinaryString(line[2], 8) if validOperand(line[2])[0] else '', file=out_file)
+                        output_line_count += 1
                     else: # Exists?
                         print(opcodes[line[1]][validOperand(line[2])[1]][validOperand(line[3])[1]],
                               int2BinaryString(line[3], 8) if validOperand(line[3])[0] else '', file=out_file)
+                        output_line_count += 1
                 else: # Is something like 'label: XOR (Dir)'
                     print(opcodes[line[1]][validOperand(line[2])[1]],
                           int2BinaryString(line[2], 8) if validOperand(line[2])[0] else '', file=out_file)
+                    output_line_count += 1
                 pass
             else:
                 print('Error in line %d, %s %s no es válido' % (line_count, line[1], line[2]))
@@ -183,5 +187,5 @@ out_file.close()
 
 print("# lines original file: " + str(original_lines_count) +
       "\n# lines of code: " + str(line_count) +
-      "\n# lines in .out: ")
+      "\n# lines in .out: " + str(output_line_count))
 # TODO: print data / code / output file line number
