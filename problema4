@@ -4,7 +4,7 @@ inicio  15
 n       10
 current   0
 end 
-mask    00000001
+mask    1
 swapped 0
 val_A   0
 val_B   0
@@ -13,67 +13,58 @@ bit     0
 
 
 CODE:
-premain:
-    // initialize current, end
-    //current = inicio
-    //end = inicio + n
-    MOV A, (inicio)
-    MOV (current), A
-    ADD A, (n)
-    SUB A, 1
-    MOV (end), A
+premain:    // initialize current, end
+            //current = inicio
+            //end = inicio + n
+            MOV A, (inicio)
+            MOV (current), A
+            ADD A, (n)
+            SUB A, 1
+            MOV (end), A
     
-main:
-    MOV A, (current)
-    /*A <- (current)*/
-    PUSH A
-    MOV B, (current)
-    MOV A, (B)
-    //A <- ((current))
-    MOV (val_A), A
-    AND A, (mask)
-    INC (current)
-    //B <- ((current))
-    MOV B, (current)
-    PUSH B
-    MOV (val_B), B
-    AND B, (mask)
-    CMP A, B
-    JGT swap
-back:    
-    // if current < end: jump to main
-    MOV A, (end)
-    CMP (current), A
-    JLT main
-    // else if swapped == 0: jump next
-    MOV A, (swapped)
-    CMP A, 0
-    JEQ next
-    //      else (swapped > 0): reset swapped, jump to premain
-    RST (swapped)
-    JMP premain
+main:   MOV A, (current)
+        //A <- (current)
+        PUSH A
+        MOV B, (current)
+        MOV A, (B)
+        //A <- ((current))
+        MOV (val_A), A
+        AND A, (mask)
+        INC (current)
+        //B <- ((current))
+        MOV B, (current)
+        PUSH B
+        MOV (val_B), B
+        AND B, (mask)
+        CMP A, B
+        JGT swap
+back:    // if current < end: jump to main
+        MOV A, (end)
+        CMP (current), A
+        JLT main
+        // else if swapped == 0: jump next
+        MOV A, (swapped)
+        CMP A, 0
+        JEQ next
+        //      else (swapped > 0): reset swapped, jump to premain
+        RST (swapped)
+        JMP premain
 
+swap:   INC (swapped)
+        POP B
+        MOV A, (val_A)
+        MOV (B), A
+        POP B
+        MOV A, (val_B)
+        MOV (B), A
+        JMP back
 
-
-
-swap:
-    INC (swapped)
-    POP B
-    MOV A, (val_A)
-    MOV (B), A
-    POP B
-    MOV A, (val_B)
-    MOV (B), A
-    JMP back
-
-next:
-    MOV A, (bit)
-    CMP A, 7
-    JEQ fin
-    MOV A, (mask)
-    SHL (mask), A
-    INC (bit)
-    RST swapped
-    JMP premain
-
+next:   MOV A, (bit)
+        CMP A, 7
+        JEQ fin
+        MOV A, (mask)
+        SHL (mask), A
+        INC (bit)
+        RST swapped
+        JMP premain
 fin:
