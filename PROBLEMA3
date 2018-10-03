@@ -1,0 +1,59 @@
+DATA:
+     ptr 0x0
+     rojos 0
+     cantidadpixeles 120 // TODO: calcular
+     pixelesrecorridos 0
+     mult_count 0
+
+CODE:
+     MOV A, 0
+     MOV B, (cols)
+     JMP mult_loop
+
+mult_loop:    
+     INC (mult_count)
+     ADD A, (rows)
+     CMP B, (mult_count)
+     JEQ mult_finish
+     JMP mult_loop
+
+mult_finish:
+     MOV (cantidadpixeles), A
+     JMP loop
+     
+loop:
+     MOV A, (cantidadpixeles)
+     MOV B, (pixelesrecorridos)
+     CMP a,b
+     JEQ  final
+    
+     MOV B, (ptr) // rojo
+     MOV A, (B) // rojo
+
+     INC (ptr) // 0x0 -> 0x1
+     MOV B, (ptr) // green
+     MOV B, (B)
+     CMP a,b
+     JGT fase2
+     INC (ptr)
+
+next:
+     INC (pixelesrecorridos)
+     INC (ptr)     
+     JMP loop
+
+fase2:  // ya sabemos que hay mas rojo que verde
+     INC ptr
+     MOV B, (ptr)
+     MOV B, (B)
+     CMP a, b
+     JGT esrojo
+     JMP next
+
+esrojo:
+     INC rojos
+     JMP next
+
+final:
+     // mató
+     NOP
