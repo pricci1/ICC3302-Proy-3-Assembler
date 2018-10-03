@@ -1,0 +1,9 @@
+Uso de assembler
+================
+Req: Python >3.5
+
+$ python assembler.py <nombre programa en assembly>
+
+Output: <nombre-programa>.out y <nombre-programa>.mem
+
+Se asume que los números en hexadecimal son válidos. e.i. #FF (válido), #FG (inválido)
