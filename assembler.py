@@ -41,7 +41,7 @@ def validOperand(operand: str):
         return (True, "Lit")
     elif len(operand) >= 3:
         if operand[1:-1].isnumeric():                                           # Is a (number) 
-            if int(operand) > 255:
+            if int(operand[1:-1]) > 255:
                 print("Integer out of range: ", end='')
                 return (False, 0)          
             return (True, "(B)")
