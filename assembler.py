@@ -87,8 +87,8 @@ for i in range(len(data)):
 ''' Part 3.1: Create .mem file '''
 if (len(memory.items()) > 0):
     out_mem = open(out_file_path+".mem", "w+")
-    for item in memory.items():
-        print(int2BinaryString(str(item[1]), 8), file=out_mem)
+    for item in data:
+        print(int2BinaryString(str(item[1]) if item[1].isnumeric() else '0', 8), file=out_mem)
     out_mem.close() 
 
 ''' Part 4: Translate opcodes '''
