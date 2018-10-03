@@ -1,8 +1,8 @@
 DATA:
 
-inicio  0
+inicio  15
 n       10
-count   0
+current   0
 end 
 mask    00000001
 swapped 0
@@ -14,24 +14,36 @@ bit     0
 
 CODE:
 premain:
-    // initialize count, end
+    // initialize current, end
+    //current = inicio
+    //end = inicio + n
+    MOV A, (inicio)
+    MOV (current), A
+    ADD A, (n)
+    SUB A, 1
+    MOV (end), A
+    
 main:
-    A <- (count)
+    MOV A, (current)
+    /*A <- (current)*/
     PUSH A
-    A <- ((count))
+    MOV B, (current)
+    MOV A, (B)
+    //A <- ((current))
     MOV (val_A), A
     AND A, (mask)
-    INC (count)
-    B <- ((count))
+    INC (current)
+    //B <- ((current))
+    MOV B, (current)
     PUSH B
     MOV (val_B), B
     AND B, (mask)
     CMP A, B
     JGT swap
 back:    
-    // if count < end: jump to main
+    // if current < end: jump to main
     MOV A, (end)
-    CMP (count), A
+    CMP (current), A
     JLT main
     // else if swapped == 0: jump next
     MOV A, (swapped)
@@ -59,7 +71,7 @@ next:
     CMP A, 7
     JEQ fin
     MOV A, (mask)
-    SHR (mask), A
+    SHL (mask), A
     INC (bit)
     RST swapped
     JMP premain
