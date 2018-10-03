@@ -61,7 +61,7 @@ with open(input_file, 'r') as file:
     for line in file:
         code = False if re.match(r'CODE', line) == None and not code else True
         line = re.sub(r'\n', r'', line)    # Remove newline character
-        line = re.sub(r' #.*', r'', line)  # Remove comments
+        line = re.sub(r' \/\/.*', r'', line)  # Remove comments
         line_tokens = [i for i in re.split(ts ,line)]
         # print(line_tokens)
         if not code:
