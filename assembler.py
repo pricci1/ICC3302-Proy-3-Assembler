@@ -29,16 +29,16 @@ def validOperand(operand: str):
         Returns True/False"""
     if operand.isnumeric():
         if int(operand) > 255:
-            print("Integer out of range")  
-            exit()                                                   # Is a number
+            print("Integer out of range: ", end='')  
+            return (False, 0)                                                   # Is a number
         return (True, "Lit")
     elif operand in labels.keys() or operand in memory.keys():                  # Is a label or memory
         return (True, "Dir")
     elif len(operand) >= 3:
         if operand[1:-1].isnumeric():                                           # Is a (number) 
             if int(operand) > 255:
-                print("Integer out of range")
-                exit()          
+                print("Integer out of range: ", end='')
+                return (False, 0)          
             return (True, "(B)")
         elif operand[1:-1] in labels.keys() or operand[1:-1] in memory.keys():  # Is a (Dir)
             return (True, "(Dir)")
@@ -188,4 +188,3 @@ out_file.close()
 print("# lines original file: " + str(original_lines_count) +
       "\n# lines of code: " + str(line_count) +
       "\n# lines in .out: " + str(output_line_count))
-# TODO: print data / code / output file line number
