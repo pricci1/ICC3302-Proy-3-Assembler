@@ -34,6 +34,11 @@ def validOperand(operand: str):
         return (True, "Lit")
     elif operand in labels.keys() or operand in memory.keys():                  # Is a label or memory
         return (True, "Dir")
+    elif operand[0] == '#':
+        if int (operand[1:], 16) > 255:
+            print("Integer out of range: ", end='')  
+            return (False, 0) 
+        return (True, "Lit")
     elif len(operand) >= 3:
         if operand[1:-1].isnumeric():                                           # Is a (number) 
             if int(operand) > 255:
@@ -47,6 +52,8 @@ def validOperand(operand: str):
 def int2BinaryString(number, lenght):
     if number[0] == '(':
         number = number[1:-1]
+    elif number[0] == '#':
+        number = str(int(number[1:], 16))
     if memory.__contains__(number):
         number = memory[number]
     elif labels.__contains__(number):
