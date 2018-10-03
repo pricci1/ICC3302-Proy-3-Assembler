@@ -149,6 +149,7 @@ opcodes = {"MOV":{"A":      {"B":"0000000", "Lit":"0000010", "(Dir)": "0100101",
           }
 line_count = 1
 output_line_count = 0
+errors = 0
 for line in program:
     if len(line) > 1:
         if opcodes.__contains__(line[1]):
@@ -163,6 +164,7 @@ for line in program:
                     output_line_count += 1
                 else:
                     print('Error in line %d, %s %s %s no es válido' % (line_count, line[1], line[2], line[3]))
+                    errors += 1
             elif validOperand(line[2])[0]:
                 if len(line) > 3: # Is something like 'label: MOV (Dir) A'
                     if opcodes[line[1]][validOperand(line[2])[1]].__contains__(line[3]):
@@ -180,10 +182,18 @@ for line in program:
                 pass
             else:
                 print('Error in line %d, %s %s no es válido' % (line_count, line[1], line[2]))
+                errors += 1
         else:
             print('Error in line %d, %s no es válido' % (line_count, line[1]))
+            errors += 1
     line_count += 1
 out_file.close()
+
+if errors > 0: # If there were errors, delete genereted files and exit
+    from os import remove
+    remove(out_file_path + ".out")
+    remove(out_file_path + ".mem")
+    exit()
 
 print("# lines original file: " + str(original_lines_count) +
       "\n# lines of code: " + str(line_count) +
