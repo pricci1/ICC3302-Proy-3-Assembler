@@ -1,5 +1,4 @@
 DATA:
-
 inicio  15
 n       10
 current   0
@@ -9,47 +8,33 @@ swapped 0
 val_A   0
 val_B   0
 bit     0
-
-
-
 CODE:
-premain:    // initialize current, end
-            //current = inicio
-            //end = inicio + n
-            MOV A, (inicio)
-            MOV (current), A
-            ADD A, (n)
-            SUB A, 1
+premain:    MOV A, (inicio)
+            MOV (current), A // initialize current, end
+            ADD A, (n) //current = inicio
+            SUB A, 1 //end = inicio + n
             MOV (end), A
-    
 main:   MOV A, (current)
-        //A <- (current)
         PUSH A
         MOV B, (current)
         MOV A, (B)
-        //A <- ((current))
         MOV (val_A), A
         AND A, (mask)
         INC (current)
-        //B <- ((current))
         MOV B, (current)
         PUSH B
         MOV (val_B), B
         AND B, (mask)
         CMP A, B
         JGT swap
-back:    // if current < end: jump to main
-        MOV A, (end)
-        CMP (current), A
-        JLT main
-        // else if swapped == 0: jump next
+back:   MOV A, (end)  // if current < end: jump to main
+        CMP A, (current)
+        JGT main // else if swapped == 0: jump next
         MOV A, (swapped)
         CMP A, 0
-        JEQ next
-        //      else (swapped > 0): reset swapped, jump to premain
+        JEQ next //      else (swapped > 0): reset swapped, jump to premain
         RST (swapped)
         JMP premain
-
 swap:   INC (swapped)
         POP B
         MOV A, (val_A)
@@ -58,13 +43,12 @@ swap:   INC (swapped)
         MOV A, (val_B)
         MOV (B), A
         JMP back
-
 next:   MOV A, (bit)
         CMP A, 7
         JEQ fin
         MOV A, (mask)
         SHL (mask), A
         INC (bit)
-        RST swapped
+        RST (swapped)
         JMP premain
 fin:
