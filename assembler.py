@@ -8,7 +8,7 @@ args = parser.parse_args()
 input_file = args.filename
 out_file_path = "./" + args.filename 
 out_file = open(out_file_path + ".out", "w+")
-# input_file = "./program.txt"
+# input_file = "./PROBLEMA3"
 # out_file_path = "./program.out"
 # out_file = open(out_file_path, "w+")
 program = []
@@ -69,6 +69,7 @@ with open(input_file, 'r') as file:
         code = False if re.match(r'CODE', line) == None and not code else True
         line = re.sub(r'\n', r'', line)    # Remove newline character
         line = re.sub(r' \/\/.*', r'', line)  # Remove comments
+        line.rstrip()
         line_tokens = [i for i in re.split(ts ,line)]
         # print(line_tokens)
         if not code:
@@ -81,7 +82,7 @@ with open(input_file, 'r') as file:
 
 program = program[1:] # Remove ['CODE:']
 for i in range(len(program)):
-    if re.match(r'[a-z]+\:$', program[i][0]) != None:   # if the first token in line is smthg like "word:"
+    if re.match(r'[a-z_A-Z0-9]+\:$', program[i][0]) != None:   # if the first token in line is smthg like "word:"
         labels[program[i][0][:-1]] = i                  # save that token, minus ":", and its line number
 
 ''' Part 3: Create memory dictionary '''
