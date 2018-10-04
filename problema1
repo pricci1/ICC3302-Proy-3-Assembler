@@ -1,32 +1,30 @@
 DATA:
-  n
-  m
-  i    0
-  c    0
-  res  0
+n    2
+m    2
+i    0
+c    0
+res  0
 CODE:
-  MOV A, (n)
-  SHR A, A
-  MOV (m), A
-loop:
-  COMP A, (c)
-  JEQ yes
-  MOV B, (i)
-  ADD B, (c)
-  MOV A, (B)
-  MOV B, (n)
-  ADD B, (c)
-  SUB B, 1
-  MOV B, (B)
-  COMP A, B
-  JNE end
-  MOV A, (c)
-  ADD A, 1
-  MOV (c), A
-  MOV A, (m)
-  JEQ loop
-yes:
-  MOV A, (res)
-  ADD A, 1
-  MOV (res), A
+      MOV A, (n)
+      SHR A, A
+      MOV (m), A
+loop: CMP A, (c)
+      JEQ yes
+      MOV B, (i)
+      ADD B, (c)
+      MOV A, (B)
+      MOV B, (n)
+      ADD B, (c)
+      SUB B, 1
+      MOV B, (B)
+      CMP A, B
+      JNE end
+      MOV A, (c)
+      ADD A, 1
+      MOV (c), A
+      MOV A, (m)
+      JEQ loop
+yes:  MOV A, (res)
+      ADD A, 1
+      MOV (res), A
 end:
